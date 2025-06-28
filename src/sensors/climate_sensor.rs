@@ -23,7 +23,12 @@ impl ClimateSensor {
         let mut driver = BME280::new_primary(i2c_bus);
         let mut delay = Delay;
 
-        driver.init(&mut delay)?;
+        match driver.init(&mut delay) {
+            Ok(_) => {}
+            Err(e) => {
+                return Err(format!("Error initializing sensor: {:?}", e).into());
+            }
+        }
 
         Ok(ClimateSensor { driver, delay, id })
     }
@@ -31,8 +36,12 @@ impl ClimateSensor {
     pub fn read_climate_data(
         &mut self,
     ) -> Result<ClimateSensorReadings, Box<dyn std::error::Error>> {
-        let measures = self.driver.measure(&mut self.delay)?;
-
+        let measures = match self.driver.measure(&mut self.delay) {
+            Ok(m) => m,
+            Err(e) => {
+                return Err(format!("Error reading data: {:?}", e).into());
+            }
+        };
         let timestamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs();
 
         Ok(ClimateSensorReadings {
