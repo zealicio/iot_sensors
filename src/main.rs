@@ -1,4 +1,6 @@
 use crate::sensors::climate_sensor::ClimateSensor;
+use std::thread;
+use std::time::Duration;
 
 mod sensors;
 
@@ -8,6 +10,7 @@ fn main() {
 
     match ClimateSensor::new(sensor_id, i2c_bus_path) {
         Ok(mut sensor) => loop {
+            thread::sleep(Duration::from_secs(5));
             println!("Reading data...");
             match sensor.read_climate_data() {
                 Ok(readings) => {
