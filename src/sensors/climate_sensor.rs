@@ -1,8 +1,9 @@
 use bme280::i2c::BME280;
 use linux_embedded_hal::{Delay, I2cdev};
+use serde::Serialize;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct ClimateSensorReadings {
     pub sensor_id: String,
     pub timestamp: u64,
