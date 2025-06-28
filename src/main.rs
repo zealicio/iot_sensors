@@ -7,7 +7,7 @@ fn main() {
     let i2c_bus_path = "/dev/i2c-3";
 
     match ClimateSensor::new(sensor_id, i2c_bus_path) {
-        Ok(mut sensor) => {
+        Ok(mut sensor) => loop {
             println!("Reading data...");
             match sensor.read_climate_data() {
                 Ok(readings) => {
@@ -18,7 +18,7 @@ fn main() {
                     eprintln!("Error reading data: {}", e);
                 }
             }
-        }
+        },
         Err(e) => {
             eprintln!("Fatal error: {}", e);
         }
