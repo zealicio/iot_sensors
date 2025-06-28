@@ -1,0 +1,8 @@
+[package]
+name = "iot_sensors"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bme280 = "0.5.1"
+linux-embedded-hal = "0.4.0"
